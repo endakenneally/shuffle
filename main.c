@@ -5,15 +5,17 @@ void enterArtists(char artists[4][40]);
 void printArtists(char artists[4][40]);
 void enterSongs(char songs[4][40]);
 void printSongs(char songs[4][40]);
+void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index);
 
 int main()
 {
-  int i, b = 0;
+  int i,j,index,b = 0;
   char artists[4][40];
 
   enterArtists(artists);
   //printArtists(artists);
 
+  char songs[4][4][40];
   char songs1[4][40];
   char songs2[4][40];
   char songs3[4][40];
@@ -30,7 +32,22 @@ int main()
   enterSongs(songs3);
   enterSongs(songs4);
 
-  printSongs(songs1);
+  copySongs(songs,songs1,0);
+  copySongs(songs,songs2,1);
+  copySongs(songs,songs3,2);
+  copySongs(songs,songs4,3);
+
+  printf("\n\n");
+
+  for(j = 1; j < 4; j++)
+  {
+    for(i = 0; i <(strlen(songs[j][1])); i++)
+    {
+      printf("%c", songs[0][j][i]);
+    }
+    printf("\n");
+  }
+  //printSongs(songs1);
 
   return 0;
 }
@@ -83,5 +100,14 @@ void enterSongs(char songs[4][40])
   {
     printf("Please input song %d for artist %d: ", i, (songs[0][0]-48));
     fgets(songs[i], 40, stdin);
+  }
+}
+
+void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index)
+{
+  int i;
+  for(i = 0; i < 4; i++)
+  {
+    strcpy(songs[index][i],tmpsongs[i]);
   }
 }
