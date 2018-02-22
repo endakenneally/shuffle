@@ -6,6 +6,7 @@ void printArtists(char artists[4][40]);
 void enterSongs(char songs[4][40]);
 void printSongs(char songs[4][40]);
 void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index);
+void sortArtists(char artists[4][40]);
 
 int main()
 {
@@ -14,6 +15,9 @@ int main()
 
   enterArtists(artists);
   //printArtists(artists);
+
+  sortArtists(artists);
+  printArtists(artists);
 
   char songs[4][4][40];
   char songs1[4][40];
@@ -36,17 +40,6 @@ int main()
   copySongs(songs,songs2,1);
   copySongs(songs,songs3,2);
   copySongs(songs,songs4,3);
-
-  printf("\n\n");
-
-  for(j = 1; j < 4; j++)
-  {
-    for(i = 0; i <(strlen(songs[j][1])); i++)
-    {
-      printf("%c", songs[0][j][i]);
-    }
-    printf("\n");
-  }
   //printSongs(songs1);
 
   return 0;
@@ -91,7 +84,6 @@ void printSongs(char songs[4][40])
   }
 }
 
-
 void enterSongs(char songs[4][40])
 {
   int i;
@@ -109,5 +101,24 @@ void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index)
   for(i = 0; i < 4; i++)
   {
     strcpy(songs[index][i],tmpsongs[i]);
+  }
+}
+
+void sortArtists(char artists[4][40])
+{
+  int i, j;
+  char tmp[40];
+
+  for(j = 0; j < 4 ; j++)
+  {
+    for(i = 0; i < 4; i++)
+    {
+      if(strcmp(artists[j],artists[i])< 0)
+      {
+        strcpy(tmp,artists[j]);
+        strcpy(artists[j],artists[i]);
+        strcpy(artists[i],tmp);
+      }
+    }
   }
 }
