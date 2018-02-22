@@ -3,21 +3,26 @@
 
 int enterArtists(char artists[4][40],int numOfArtists);
 void printArtists(char artists[4][40]);
-int enterSongs(char songs[4][40], int numOfSongs[]);
+int enterSongs(char songs[4][40], int numOfSongs);
 void printSongs(char songs[4][40]);
 void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index);
 void sortArtists(char artists[4][40]);
-void output(char artists[4][40], char songs[4][4][40]);
+void output(char artists[4][40], char songs[4][4][40], int numOfArtists, int numOfSongs[]);
 
 int main()
 {
   int i,j,index,b = 0;
   char artists[4][40];
-  int numOfArtists;
+  int numOfArtists = 0;
+  int numOfSongs1 = 0;
+  int numOfSongs2 = 0;
+  int numOfSongs3 = 0;
+  int numOfSongs4 = 0;
 
-  enterArtists(artists, numOfArtists);
+  numOfArtists=enterArtists(artists, numOfArtists);
   //printArtists(artists);
 
+  //printf("The number of artists is %d", numOfArtists);
   sortArtists(artists);
   //printArtists(artists);
 
@@ -35,23 +40,33 @@ int main()
   songs3[0][0] = '3';
   songs4[0][0] = '4';
 
-  enterSongs(songs1, numOfSongs);
-  enterSongs(songs2, numOfSongs);
-  enterSongs(songs3, numOfSongs);
-  enterSongs(songs4, numOfSongs);
+  if(numOfArtists > 0)
+  {
+    numOfSongs1 = enterSongs(songs1, numOfSongs1);
+    numOfSongs[0] = numOfSongs1;
+  }
+  if(numOfArtists > 1)
+  {
+    numOfSongs2 = enterSongs(songs2, numOfSongs2);
+    numOfSongs[1] = numOfSongs2;
+  }
+  if(numOfArtists > 2)
+  {
+    numOfSongs3 = enterSongs(songs3, numOfSongs3);
+    numOfSongs[2] = numOfSongs3;
+  }
+  if(numOfArtists > 3)
+  {
+    numOfSongs4 = enterSongs(songs4, numOfSongs4);
+    numOfSongs[3] = numOfSongs4;
+  }
 
   copySongs(songs,songs1,0);
   copySongs(songs,songs2,1);
   copySongs(songs,songs3,2);
   copySongs(songs,songs4,3);
 
-  /*
-  printf("%s", songs[0][1]);
-  printf("%s", songs[0][2]);
-  printf("%s", songs[0][3]);
-  */
-
-  output(artists, songs);
+  output(artists, songs, numOfArtists, numOfSongs);
 
   return 0;
 }
@@ -102,7 +117,7 @@ void printSongs(char songs[4][40])
   }
 }
 
-int enterSongs(char songs[4][40], int numOfSongs[])
+int enterSongs(char songs[4][40], int numOfSongs)
 {
   int i, j;
   char tmp[40];
@@ -111,6 +126,11 @@ int enterSongs(char songs[4][40], int numOfSongs[])
   {
     printf("Please input song %d for artist %d: ", i, (songs[0][0]-48));
     fgets(songs[i], 40, stdin);
+    if(songs[i][0] == '\n')
+    {
+      break;
+    }
+    numOfSongs++;
   }
 
   for(j = 0; j < 4 ; j++)
@@ -125,6 +145,7 @@ int enterSongs(char songs[4][40], int numOfSongs[])
       }
     }
   }
+  return numOfSongs;
 }
 
 void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index)
@@ -155,15 +176,15 @@ void sortArtists(char artists[4][40])
   }
 }
 
-void output(char artists[4][40], char songs[4][4][40])
+void output(char artists[4][40], char songs[4][4][40], int numOfArtists, int numOfSongs[])
 {
   int i,j;
 
   printf("Sorted list of songs: \n");
-  for(j = 0; j < 4; j++)
+  for(j = 0; j < numOfArtists; j++)
   {
     printf("%s", artists[j]);
-    for(i = 1; i < 4; i++)
+    for(i = 1; i < numOfSongs[j]+1; i++)
     {
       printf("    -   %s", songs[j][i]);
     }
