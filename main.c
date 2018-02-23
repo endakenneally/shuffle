@@ -9,12 +9,13 @@ void printSongs(char songs[4][40]);
 void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index);
 void sortArtists(char artists[4][40]);
 void output(char artists[4][40], char songs[4][4][40], int numOfSongs, int index);
-void inputList(char list[24][40], char songs[4][4][40]);
+int putin(char list[24][40], char songs[4][40], int numOfSongs, int index);
 void shuffle(char list[24][40], int numOfSongs);
 
 int main()
 {
-  int i,j,index,b = 0;
+  int i,j,b = 0;
+  int counter = 0;
   char artists[4][40];
   int numOfArtists = 0;
   int numOfSongs1 = 0;
@@ -90,21 +91,28 @@ int main()
     output(artists, songs, numOfSongs4, 3);
   }
 
-  inputList(list,songs);
+  int index = putin(list, songs1, numOfSongs1, 0);
+  index = putin(list, songs2, numOfSongs2, index);
+  index = putin(list, songs3, numOfSongs3, index);
+  index = putin(list, songs4, numOfSongs4, index);
+  index = putin(list, songs1, numOfSongs1, index);
+  index = putin(list, songs2, numOfSongs2, index);
+  index = putin(list, songs3, numOfSongs3, index);
+  index = putin(list, songs4, numOfSongs4, index);
 
-  shuffle(list, numOfSongs);
-
-  for(i = 0; i <24; i++)
+  for(int i = 0; i < index; i++)
   {
-        printf("%s", list[i]);
+    printf("%s", list[i]);
   }
-  /*
-  printf("%d\n", numOfArtists);
-  printf("%d\n", numOfSongs1);
-  printf("%d\n", numOfSongs2);
-  printf("%d\n", numOfSongs3);
-  printf("%d\n", numOfSongs4);
-*/
+
+  printf("\n\n\n\n");
+
+  shuffle(list, index);
+
+  for(int i = 0; i < index; i++)
+  {
+    printf("%s", list[i]);
+  }
 
   return 0;
 }
@@ -117,7 +125,7 @@ int enterArtists(char artists[4][40], int numOfArtists)
   {
     printf("Please input an Artist: ");
     fgets(artists[i], 40, stdin);
-    if(artists[i][0] == '\n')
+    if(artists[i][0] == 'z')
     {
       break;
     }
@@ -164,16 +172,16 @@ int enterSongs(char songs[4][40], int numOfSongs, char artists[4][40], int index
   {
     printf("Please input song %d for artist %s: ", i, artists[index]);
     fgets(songs[i], 40, stdin);
-    if(songs[i][0] == '\n')
+    if(songs[i][0] == 'z')
     {
       break;
     }
     numOfSongs++;
   }
 
-  for(j = 0; j < 4 ; j++)
+  for(j = 1; j < 4 ; j++)
   {
-    for(i = 0; i < 4; i++)
+    for(i = 1; i < 4; i++)
     {
       if(strcmp(songs[j],songs[i])<0)
       {
@@ -224,35 +232,11 @@ void output(char artists[4][40], char songs[4][4][40], int numOfSongs, int index
     }
 }
 
-void inputList(char list[24][40], char songs[4][4][40])
-{
-  int b = 0, i, j, g;
-
-  for(g = 0; g <2; g++)
-  {
-    for(j = 0; j < 4; j++)
-    {
-      for(i = 1; i < 4; i++)
-      {
-          strcpy(list[b],songs[j][i]);
-          b++;
-      }
-    }
-  }
-
-  /*
-  for(i = 0; i <24; i++)
-  {
-    printf("%s", list[i]);
-  }
-  */
-}
-
-void shuffle(char list[24][40], int numOfSongs)
+void shuffle(char list[24][40], int index)
 {
   int i,j,swap[40];
 
-  for(i = 0; i <24; i++)
+  for(i = 0; i <index; i++)
   {
     j = rand()%(i+1);
     if(j!=1)
@@ -262,5 +246,14 @@ void shuffle(char list[24][40], int numOfSongs)
       strcpy(list[i], swap);
     }
   }
+}
 
+int putin(char list[24][40], char songs[4][40], int numOfSongs, int index)
+{
+  for(int i = 0; i < numOfSongs;i++)
+  {
+    strcpy(list[index], songs[i+1]);
+    index++;
+  }
+  return index;
 }
