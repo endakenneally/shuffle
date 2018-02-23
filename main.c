@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 int enterArtists(char artists[4][40],int numOfArtists);
 void printArtists(char artists[4][40]);
@@ -9,7 +10,7 @@ void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index);
 void sortArtists(char artists[4][40]);
 void output(char artists[4][40], char songs[4][4][40], int numOfSongs, int index);
 void inputList(char list[24][40], char songs[4][4][40]);
-void shuffle(char list[24][40]);
+void shuffle(char list[24][40], int numOfSongs);
 
 int main()
 {
@@ -20,7 +21,10 @@ int main()
   int numOfSongs2 = 0;
   int numOfSongs3 = 0;
   int numOfSongs4 = 0;
+  int totalSongs;
   char list[24][40];
+
+  srand(time(NULL));
 
   numOfArtists=enterArtists(artists, numOfArtists);
   //printArtists(artists);
@@ -60,6 +64,8 @@ int main()
     numOfSongs4 = enterSongs(songs4, numOfSongs4, artists, 3);
   }
 
+  totalSongs = numOfSongs1+numOfSongs2+numOfSongs3+numOfSongs4;
+
   copySongs(songs,songs1,0);
   copySongs(songs,songs2,1);
   copySongs(songs,songs3,2);
@@ -86,6 +92,12 @@ int main()
 
   inputList(list,songs);
 
+  shuffle(list, numOfSongs);
+
+  for(i = 0; i <24; i++)
+  {
+        printf("%s", list[i]);
+  }
   /*
   printf("%d\n", numOfArtists);
   printf("%d\n", numOfSongs1);
@@ -222,19 +234,33 @@ void inputList(char list[24][40], char songs[4][4][40])
     {
       for(i = 1; i < 4; i++)
       {
-        strcpy(list[b],songs[j][i]);
-        b++;
+          strcpy(list[b],songs[j][i]);
+          b++;
       }
     }
   }
 
+  /*
   for(i = 0; i <24; i++)
   {
     printf("%s", list[i]);
   }
+  */
 }
 
-void shuffle(char list[24][40])
+void shuffle(char list[24][40], int numOfSongs)
 {
+  int i,j,swap[40];
+
+  for(i = 0; i <24; i++)
+  {
+    j = rand()%(i+1);
+    if(j!=1)
+    {
+      strcpy(swap,list[j]);
+      strcpy(list[j], list[i]);
+      strcpy(list[i], swap);
+    }
+  }
 
 }
