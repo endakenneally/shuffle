@@ -9,7 +9,7 @@ void printSongs(char songs[4][40]);
 void copySongs(char songs[4][4][40], char tmpsongs[4][40], int index);
 void sortArtists(char artists[4][40]);
 void output(char artists[4][40], char songs[4][4][40], int numOfSongs, int index);
-int putin(char list[24][40], char songs[4][40], int numOfSongs, int index);
+int putin(char list[24][40], char artists[4][40], char songs[4][40], int numOfSongs, int index, int artist);
 void shuffle(char list[24][40], int numOfSongs);
 
 int main()
@@ -91,14 +91,14 @@ int main()
     output(artists, songs, numOfSongs4, 3);
   }
 
-  int index = putin(list, songs1, numOfSongs1, 0);
-  index = putin(list, songs2, numOfSongs2, index);
-  index = putin(list, songs3, numOfSongs3, index);
-  index = putin(list, songs4, numOfSongs4, index);
-  index = putin(list, songs1, numOfSongs1, index);
-  index = putin(list, songs2, numOfSongs2, index);
-  index = putin(list, songs3, numOfSongs3, index);
-  index = putin(list, songs4, numOfSongs4, index);
+  int index = putin(list, artists, songs1, numOfSongs1, 0, 0);
+  index = putin(list, artists,songs2, numOfSongs2, index, 1);
+  index = putin(list, artists,songs3, numOfSongs3, index, 2);
+  index = putin(list, artists,songs4, numOfSongs4, index, 3);
+  index = putin(list, artists,songs1, numOfSongs1, index, 0);
+  index = putin(list, artists,songs2, numOfSongs2, index, 1);
+  index = putin(list, artists,songs3, numOfSongs3, index, 2);
+  index = putin(list, artists,songs4, numOfSongs4, index, 3);
 
   for(int i = 0; i < index; i++)
   {
@@ -113,7 +113,6 @@ int main()
   {
     printf("%s", list[i]);
   }
-
   return 0;
 }
 
@@ -248,12 +247,17 @@ void shuffle(char list[24][40], int index)
   }
 }
 
-int putin(char list[24][40], char songs[4][40], int numOfSongs, int index)
+int putin(char list[24][40], char artists[4][40], char songs[4][40], int numOfSongs, int index, int artist)
 {
-  for(int i = 0; i < numOfSongs;i++)
+  char temp[40], middle[] = " - ";
+  for(int i = 1; i < numOfSongs;i++)
   {
-    strcpy(list[index], songs[i+1]);
+    strcpy(temp, songs[i]);
+    strcat(list[index],artists[artist]);
+    strcat(list[index],middle);
+    strcat(list[index],temp);
     index++;
   }
+
   return index;
 }
